@@ -34,33 +34,3 @@ int main()
     return 0;
 }
 
-//TESTEO TDA VECTOR DESPUES BORRO
-
-//int cmpInt(void* a, void* b) {
-//    return *(int*)b - *(int*)a;
-//}
-//
-//void mostrar(void* data) {
-//    int dato = *(int*)data;
-//    printf("%d ", dato);
-//}
-//
-//int main() {
-//    TDAVector vec;
-//    crearVector(&vec, sizeof(int), 6);
-//    int num = 4;
-//    insertarVectorOrdenado(&vec, &num, cmpInt);
-//    num = 2;
-//    insertarVectorOrdenado(&vec, &num, cmpInt);
-//    num = 1;
-//    insertarVectorOrdenado(&vec, &num, cmpInt);
-//    num = 0;
-//    insertarVectorOrdenado(&vec, &num, cmpInt);
-//    num = 3;
-//    insertarVectorOrdenado(&vec, &num, cmpInt);
-//    mostrarVector(&vec, mostrar);
-////    mezclarVector(&vec);
-////    mostrarVector(&vec, mostrar);
-//
-//    return 0;
-//}
