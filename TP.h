@@ -15,7 +15,7 @@ typedef struct
 void mostrarJugador(void* data, FILE* donde);
 void menuPrincipal();
 void mostrarConfig(tConfig* config);
-int cargarJugadores(TDAVector* jug, int cantidadMax);
+int cargarJugadores(TDAVector* jug);
 int calcularPuntaje(tPuntaje *puntaje);
 int cmpPuntosJugador(void* a, void* b);
 void iniciarPartida(tConfig* config);
