@@ -21,11 +21,11 @@ void mostrarConfig(tConfig* config)
     printf("Rondas: %d\n", config->cantidad);
 }
 
-int cargarJugadores(TDAVector* jug, int cantidadMax)
+int cargarJugadores(TDAVector* jug)
 {
     int cant = 0;
-    printf("Ingresa los jugadores: ");
-    while(cant < cantidadMax)
+    printf("Ingresa los jugadores (DETENGA LA CARGA INGRESANDO LA PALABRA 'LISTO': ");
+    while(1)
     {
         char nombre[100];
         scanf("%s", nombre);
@@ -97,7 +97,7 @@ void iniciarPartida(tConfig* config) {
 
     crearVector(&jugadores, sizeof(tJugador), 5);
     crearVector(&yaJugaron, sizeof(tJugador), 5);
-    cantJugadores = cargarJugadores(&jugadores, 3);
+    cantJugadores = cargarJugadores(&jugadores);
 //    mostrarConfig(&config);
     printf("El orden los jugadores sera: \n");
     mostrarVector(&jugadores, mostrarJugador, stdout);
