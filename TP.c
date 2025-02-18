@@ -76,9 +76,8 @@ void generarJSONFinal(tJuego* juego, tConfig* config, TDAVector* jugadores) {
     sprintf(json + strlen(json), "\t]\n");
     sprintf(json + strlen(json), "}");
 //    enviarInformacionAPI("http://localhost:8080", json);
-    printf("\n%s", json);
+//    printf("\n%s", json);
     free(json);
-    getch();
 }
 
 
@@ -121,7 +120,7 @@ void iniciarPartida(tConfig* config) {
     fprintf(resArch, "Los jugadores con mas puntos fueron: \n");
     mostrarVector(&yaJugaron, mostrarJugador, stdout); //Escribir vector en el archivo
     imprimirMayores(&yaJugaron, cmpPuntosJugador, mostrarJugador, resArch);
-    generarJSONFinal(&juego, config, &jugadores);
+//    generarJSONFinal(&juego, config, &jugadores);
     fclose(resArch);
     vaciarVector(&jugadores);
     vaciarVector(&yaJugaron);
