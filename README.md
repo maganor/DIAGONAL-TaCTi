@@ -1,3 +1,12 @@
+Cómo jugar: 
+- Una vez seleccionada la opción jugar debe ingresar los nombres de todos los jugadores que vayan a jugar, terminando la carga al escribir la palabra "listo"
+- Una vez cargados los nombres verá el orden en que jugarán los jugadores y sus puntajes actuales. Seguido a esto se le preguntará al primer jugador si esta listo y debe ingresar una "s" si lo esta
+- A partir de ahi iniciaran las rondas de cada jugador determinadas por el archivo de configuracion, en la que cada vez que sea el turno del jugador para hacer su jugada debe ingresar el número de columna, apretar enter, ingresar la fila y apretar enter de nuevo.
+
+*Si quiere cambiar la cantidad de rondas que juega cada jugador debe modificar el archivo de de texto config.txt*
+
+
+
 Descripción   | Salida esperada | Salida obtenida 
 ------------- | -------------   | -------------
 Se quiere probar que es lo que pasaría si se inserta un número de columna invalido    | Se espera que el sistema muestra un mensaje de “Posición invalida” y pide volver a ingresar columna y fila   | ![](https://github.com/Lautaro307/ArgProg23/blob/main/image.png) 
