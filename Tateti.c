@@ -99,7 +99,6 @@ tPos buscarPosicion(tJuego* juego, char jugador)
         if(cont == 2 && pos.fila != 128) return pos;
     }
     //Vertical
-    //Faltan diagonales
     cont = 0;
     pos.fila = 128;
     for(i=0; i<3; i++)
