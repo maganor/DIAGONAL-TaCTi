@@ -1,37 +1,43 @@
 #include "Tateti.h"
+#include "TP.h"
 void llenarTablero(unsigned char tablero[3][3])
 {
     for(int i=0; i<3; i++)
         for(int j=0; j<3; j++) tablero[i][j] = '0';
 }
 
+//Devuelve 0 si el jugador enviado gano
 int revisarVictoria(tJuego* juego, char jugador)
 {
+    int i, j, cont;
     //Horizontal
-    int i, j;
-    int cont;
     for(i=0; i<3; i++)
     {
         cont = 0;
-        for(j=0; j<3; j++) if(juego->tablero[i][j] == jugador) cont++;
-        if(cont == 3) return 0;
+        for(j=0; j<3; j++)
+            if(juego->tablero[i][j] == jugador) cont++;
+        if(cont == 3) return 1;
     }
     //Vertical
     for(i=0; i<3; i++)
     {
         cont = 0;
         for(j=0; j<3; j++) if(juego->tablero[j][i] == jugador) cont++;
-        if(cont == 3) return 0;
+        if(cont == 3) return 1;
     }
     //Diagonal principal
     cont = 0;
     for(i=0; i<3; i++) if(juego->tablero[i][i] == jugador) cont++;
-    if(cont == 3) return 0;
+    if(cont == 3) return 1;
     //Diagonal secundaria
     cont = 0;
     for(i=0; i<3; i++) if(juego->tablero[i][2-i] == jugador) cont++;
-    if(cont == 3) return 0;
-    return -1;
+    if(cont == 3) return 1;
+    if(juego->espaciosDisponibles <= 0)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 void mostrarTablero(tJuego* juego)
@@ -57,12 +63,14 @@ void mostrarTablero(tJuego* juego)
 
 tPos buscarPosicion(tJuego* juego, char jugador)
 {
+    //Busca cuantas veces se repite la pieza enviada
     //Horizontal
     int cont, i, j;
-    tPos pos = {-1, -1};
+    tPos pos = {128, 128};
     for(i=0; i<3; i++)
     {
         cont = 0;
+        pos.fila = 128;
         for(j=0; j<3; j++)
         {
             if(juego->tablero[i][j] == '0')
@@ -72,12 +80,13 @@ tPos buscarPosicion(tJuego* juego, char jugador)
             }
             if(juego->tablero[i][j] == jugador) cont++;
         }
-        if(cont == 2) return pos;
+        if(cont == 2 && pos.fila != 128) return pos;
     }
     cont = 0;
     for(i=0; i<3; i++)
     {
         cont = 0;
+        pos.fila = 128;
         for(j=0; j<3; j++)
         {
             if(juego->tablero[j][i] == '0')
@@ -87,11 +96,12 @@ tPos buscarPosicion(tJuego* juego, char jugador)
             }
             if(juego->tablero[j][i] == jugador) cont++;
         }
-        if(cont == 2) return pos;
+        if(cont == 2 && pos.fila != 128) return pos;
     }
     //Vertical
     //Faltan diagonales
     cont = 0;
+    pos.fila = 128;
     for(i=0; i<3; i++)
     {
         if(juego->tablero[i][i] == '0')
@@ -101,9 +111,10 @@ tPos buscarPosicion(tJuego* juego, char jugador)
         }
         if(juego->tablero[i][i] == jugador) cont++;
     }
-    if(cont == 2) return pos;
+    if(cont == 2 && pos.fila != 128) return pos;
     //Diagonal secundaria
     cont = 0;
+    pos.fila = 128;
     for(i=0; i<3; i++)
     {
         if(juego->tablero[i][2-i] == '0')
@@ -113,7 +124,8 @@ tPos buscarPosicion(tJuego* juego, char jugador)
         }
         if(juego->tablero[i][2-i] == jugador) cont++;
     }
-    if(cont == 2) return pos;
+    if(cont == 2 && pos.fila != 128) return pos;
+    pos.fila = 128;
     return pos;
 }
 
@@ -124,7 +136,6 @@ void jugadaAleatoria(unsigned char tablero[3][3], char pieza)
     {
         x = rand() % 3;
         y = rand() % 3;
-//        printf("%d %d", x, y);
     }
     while (tablero[y][x] != '0');
     tablero[y][x] = pieza;
@@ -133,37 +144,78 @@ void jugadaAleatoria(unsigned char tablero[3][3], char pieza)
 void jugadaMaquina(tJuego* juego, unsigned char pieza)
 {
     tPos pos;
+    if (juego->maquina>=2)
+    {
+        pos = buscarPosicion(juego, juego->maquinaC); //Busca ganar la maquina
+        if(pos.fila != 128)   //Si encuentra una posicion para jugar
+        {
+            juego->tablero[pos.fila][pos.col] = pieza;
+            return;
+        }
+    }
     if(juego->jugador >= 2)   //Si se jugo dos o mas veces, ya tiene chances de ganar tengo que tratar de que no.
     {
-        pos = buscarPosicion(juego, juego->jugadorC);
-        if(pos.fila != -1)   //Si encuentra una posicion para jugar
+        pos = buscarPosicion(juego, juego->jugadorC); //Trata de cancelar la victoria del jugador
+        if(pos.fila != 128)   //Si encuentra una posicion para jugar
         {
-            if(juego->tablero[pos.fila][pos.col] == '0')   //Si la fila no es
-            {
-                juego->tablero[pos.fila][pos.col] = pieza;
-                return;
-            }
-        }
-        else if (juego->maquina>=2)
-        {
-            pos = buscarPosicion(juego, juego->maquinaC);
-            if(pos.fila != -1)   //Si encuentra una posicion para jugar
-            {
-                if(juego->tablero[pos.fila][pos.col] == '0')   //Si la fila no es
-                {
-                    juego->tablero[pos.fila][pos.col] = pieza;
-                    return;
-                }
-            }
+            juego->tablero[pos.fila][pos.col] = pieza;
+            return;
         }
     }
     jugadaAleatoria(juego->tablero, pieza);
 }
 
-
-tPuntaje empezarPartida(tJuego* juego, int cantRondas, char nombre[50])
+void jugadaJugador(tJuego* juego)
 {
-    tPuntaje puntaje = {0, 0, 0};
+    int bien, x, y;
+    do
+    {
+        printf("Ingresar col fila: ");
+        fflush(stdin);
+        bien = scanf("%d %d", &x, &y); //scanf si leyo bien devuelve la cantidad de parametros mandados.
+        if(x>2 || y>2 || juego->tablero[y][x] != '0' || bien != 2)
+            printf("Posicion invalida\n");
+    }
+    while(x>2 || y>2 || juego->tablero[y][x] != '0');
+    juego->tablero[y][x] = juego->jugadorC;
+    juego->jugador+=1;
+    juego->espaciosDisponibles-=1;
+}
+
+int revisarCondicionFin(tJuego* juego)
+{
+    //La forma del jugador actual
+    char formaActual = juego->actual == Usuario ? juego->jugadorC : juego->maquinaC;
+    //Solo revisar victoria si se jugaron al menos 5 turnos.
+    int resultado = revisarVictoria(juego, formaActual);
+    if(resultado == 1) //Victoria
+    {
+        return formaActual == juego->jugadorC;
+    }
+    else if(resultado == -1)     //EMPATE
+    {
+        return -1;
+    }
+    return 2;
+}
+
+void escribirTableroArchivo(tJuego* juego, FILE* arch) {
+    for(int i=0; i<3; i++) {
+        for(int j=0; j<3; j++) {
+            if(juego->tablero[i][j] == '0') {
+                fprintf(arch, "  ");
+            }
+            else fprintf(arch,"%c ", juego->tablero[i][j]);
+        }
+        fprintf(arch, "\n");
+    }
+}
+tPuntaje empezarPartida(tJuego* juego, int cantRondas, char nombre[50], FILE* resultados)
+{
+    juego->puntaje = (tPuntaje)
+    {
+        0, 0, 0
+    };
     juego->rondas = cantRondas;
     juego->jugador = 0;
     juego->maquina = 0;
@@ -172,8 +224,9 @@ tPuntaje empezarPartida(tJuego* juego, int cantRondas, char nombre[50])
     strcpy(juego->nombreJugador, nombre);
 
     srand(time(NULL));
-    int x, y, numeroAleatorio;
+    int numeroAleatorio, puntaje;
     Jugador jugadorAleatorio;
+    fprintf(resultados, "TURNO DE %s\n", nombre);
     while(juego->rondaActual <= juego->rondas)
     {
         llenarTablero(juego->tablero);
@@ -196,63 +249,57 @@ tPuntaje empezarPartida(tJuego* juego, int cantRondas, char nombre[50])
             system("cls");
             mostrarTablero(juego);
             //Se decide si juega la maquina o el jugador
-            if(juego->actual == Maquina)
+            if(juego->actual == Maquina) //Turno de la maquina
             {
                 jugadaMaquina(juego, juego->maquinaC);
                 juego->maquina+=1;
                 juego->espaciosDisponibles-=1;
             }
-            else
+            else //Turno del Jugador
             {
-                int bien;
-                do
-                {
-                    printf("Ingresar col/fila: ");
-                    fflush(stdin);
-                    bien = scanf("%d %d", &x, &y); //scanf si leyo bien devuelve la cantidad de parametros mandados.
-                    if(x>2 || y>2 || juego->tablero[y][x] != '0' || bien != 2)
-                        printf("Posicion invalida\n");
-                }
-                while(x>2 || y>2 || juego->tablero[y][x] != '0');
-                juego->tablero[y][x] = juego->jugadorC;
-                juego->jugador+=1;
-                juego->espaciosDisponibles-=1;
+                jugadaJugador(juego);
             }
-            //La forma del jugador actual
-            char formaActual = juego->actual == Usuario ? juego->jugadorC : juego->maquinaC;
-            //Solo revisar victoria si se jugaron al menos 5 turnos.
-            if(juego->espaciosDisponibles < 5)
+            //Tiene que breakear si es 1
+            system("cls");
+            mostrarTablero(juego);
+            int condicion = revisarCondicionFin(juego);
+            if(condicion != 2)
             {
-                if(revisarVictoria(juego, formaActual) == 0) //Gano el jugador actual?
+                escribirTableroArchivo(juego, resultados);
+                if(condicion == JUGADOR)
                 {
-                    system("cls");
-                    mostrarTablero(juego);
-                    if(formaActual == juego->jugadorC)
-                    {
-                        puntaje.jugador++;
-                        printf("Gano el jugador\n");
-                    }
-                    else
-                    {
-                        puntaje.maquina++;
-                        printf("Gano la maquina\n");
-                    }
-                    break;
+                    // Gano el jugador
+                    juego->puntaje.jugador++;
+                    puntaje = calcularPuntaje(&(juego->puntaje));
+                    fprintf(resultados, "Ganaste 3 puntos. Vas %d puntos\n", puntaje);
+                    printf("Gano el jugador\n");
                 }
-            }
-            if(juego->espaciosDisponibles <= 0)
-            {
-                puntaje.empates++;
+                else if (condicion == MAQUINA)
+                {
+                    juego->puntaje.maquina++;
+                    puntaje = calcularPuntaje(&(juego->puntaje));
+                    fprintf(resultados, "Gano la maquina, Perdiste 1 punto. Vas %d puntos\n", puntaje);
+                    printf("Gano la maquina\n");
+                }
+                else if (condicion == EMPATE)    //Empate
+                {
+                    juego->puntaje.empates++;
+                    puntaje = calcularPuntaje(&(juego->puntaje));
+                    fprintf(resultados, "Hubo empate, Ganaste 2 puntos. Vas %d puntos\n", puntaje);
+                    printf("Hubo empate\n");
+                }
                 break;
             }
+//            if(revisarCondicionFin(juego) == 1) break; //Hubo empate/victoria
             juego->actual = !juego->actual; //Cambiar de jugador
         }
-        getch();
+        getch(); //Esperar entrada del usuario para poder continuar
         //Reiniciar ronda
         juego->rondaActual+=1;
         juego->jugador = 0;
         juego->maquina = 0;
         juego->espaciosDisponibles = 9;
     }
-    return puntaje;
+
+    return juego->puntaje;
 }

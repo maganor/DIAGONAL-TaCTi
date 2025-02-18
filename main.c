@@ -6,43 +6,31 @@
 
 int main()
 {
-    tJuego juego;
     tConfig config;
-    int cantJugadores = 0, contJugadores = 0;
     char respuesta;
-    tJugador temp;
-    TDAVector jugadores;
-    TDAVector yaJugaron;
 
-    crearVector(&jugadores, sizeof(tJugador), 5);
-    crearVector(&yaJugaron, sizeof(tJugador), 5);
     if(leerConfig(&config) == -1)
     {
         printf("Error leyendo el archivo de configuracion, verifica que este bien escrito");
         system("exit");
     }
-    cantJugadores = cargarJugadores(&jugadores, 3);
-//    mostrarConfig(&config);
-    mostrarVector(&jugadores, mostrarJugador);
-    indiceVector(&jugadores, &temp, contJugadores); //Agarrar el primer jugador del vector para poder saber el nombre y preguntar si esta listo
-    printf("Estas listo para jugar %s? : ", temp.nombre);
-    fflush(stdin);
-    scanf("%c", &respuesta);
-    if(tolower(respuesta) == 's')
-    {
-        while(contJugadores < cantJugadores)
-        {
-            indiceVector(&jugadores, &temp, contJugadores);
-            tPuntaje puntaje = empezarPartida(&juego, config.cantidad, temp.nombre);
-            temp.puntos = calcularPuntaje(&puntaje);
-            insertarVectorOrdenado(&yaJugaron, &temp, cmpPuntosJugador);
-            contJugadores++;
+
+    do {
+        system("cls");
+        menuPrincipal();
+        printf("Ingrese la opcion deseada: ");
+        fflush(stdin);
+        scanf("%c", &respuesta);
+        if(respuesta == 'A') {
+            iniciarPartida(&config);
+        } else if (respuesta == 'B') {
+            printf("Mostrando ranking del team");
+        } else if (respuesta == 'C') {
+            system("exit");
+        } else {
+            printf("Opcion Incorrecta");
         }
-    }
-    mostrarVector(&yaJugaron, mostrarJugador);
-//    escribirResultado(&config);
-    vaciarVector(&jugadores);
-    vaciarVector(&yaJugaron);
+    } while(respuesta != 'C');
     return 0;
 }
 

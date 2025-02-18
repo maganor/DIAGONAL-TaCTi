@@ -39,10 +39,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Archivos.h" />
+		<Unit filename="TP.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TP.h" />
 		<Unit filename="Tateti.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Tateti.h" />
+		<Unit filename="Vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Vector.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

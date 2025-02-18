@@ -22,24 +22,37 @@ void agregarVector(TDAVector* vec, void* data)
 void mezclarVector(TDAVector* vec)
 {
     srand(time(NULL));
+    void* temp = malloc(vec->tamDato);
     for(int i= vec->tam_actual-1; i>=1; i--)
     {
         int j = rand() % i;
-        void* temp = malloc(vec->tamDato);
         memcpy(temp, vec->data + i * vec->tamDato, vec->tamDato);
         memcpy(vec->data + i * vec->tamDato, vec->data + j * vec->tamDato, vec->tamDato);
         memcpy(vec->data + j * vec->tamDato, temp, vec->tamDato);
     }
+    free(temp);
 }
 
-void mostrarVector(TDAVector* vec, Accion mostrar)
+void mostrarVector(TDAVector* vec, Accion mostrar, FILE* donde)
 {
     for(int i=0; i<vec->tam_actual; i++)
     {
-        mostrar(vec->data+i*vec->tamDato);
+        mostrar(vec->data+i*vec->tamDato, donde);
     }
-    printf("\n");
 }
+
+void mostrarVectorVar(TDAVector* vec, AccionVar mostrar, char* var)
+{
+    for(int i=0; i<vec->tam_actual; i++)
+    {
+        mostrar(vec->data+i*vec->tamDato, var);
+    }
+}
+
+int tamVector(TDAVector* vec) {
+    return vec->tam_actual;
+}
+
 
 void indiceVector(TDAVector* vec, void* data, int idx)
 {
@@ -65,5 +78,27 @@ void vaciarVector(TDAVector* vec)
 {
     free(vec->data);
     vec->tam_actual = 0;
+}
+
+void imprimirMayores(TDAVector* vec, Cmp cmp, Accion mostrar, FILE* donde)
+{
+    void* max = malloc(vec->tamDato);
+    memcpy(max, vec->data, vec->tamDato);
+    //Busco el mayor valor
+    for(int i=1; i<vec->tam_actual; i++)
+    {
+        if(cmp(max, vec->data+i*vec->tamDato) < 0)
+        {
+            memcpy(max, vec->data+i*vec->tamDato, vec->tamDato);
+        }
+    }
+    for(int i=0; i<vec->tam_actual; i++)
+    {
+        if(cmp(max, vec->data+i*vec->tamDato) == 0)
+        {
+            mostrar(vec->data+i*vec->tamDato, donde);
+        }
+    }
+    free(max);
 }
 //Insertar en vector ordenado

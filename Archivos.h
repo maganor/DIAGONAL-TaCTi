@@ -12,5 +12,4 @@ typedef struct
 } tConfig;
 
 int leerConfig(tConfig* config);
-int escribirResultado(tConfig* config);
 #endif // ARCHIVOS_H_INCLUDED

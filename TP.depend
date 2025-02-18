@@ -1,48 +1,54 @@
 # depslib dependency file v1.0
-1739734174 source:c:\users\wixde\documents\tp\main.c
+1739833290 source:c:\users\wixde\documents\tp\main.c
 	<stdio.h>
 	<stdlib.h>
 	"TP.h"
 	<ctype.h>
 
-1739733627 source:c:\users\wixde\documents\tp\archivos.c
+1739833618 source:c:\users\wixde\documents\tp\archivos.c
 	"Archivos.h"
 
-1739733636 c:\users\wixde\documents\tp\archivos.h
+1739833609 c:\users\wixde\documents\tp\archivos.h
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
 	<time.h>
 
-1738772859 source:c:\users\wixde\documents\tp\api.c
+1739844153 source:c:\users\wixde\documents\tp\api.c
+	"API.h"
 
-1738774193 c:\users\wixde\documents\tp\api.h
+1739843306 c:\users\wixde\documents\tp\api.h
 	<stdio.h>
 	<stdlib.h>
 	<curl/curl.h>
 
-1739665701 c:\users\wixde\documents\tp\tateti.h
+1739833810 c:\users\wixde\documents\tp\tateti.h
 	<stdlib.h>
 	<stdio.h>
 	<time.h>
+	<conio.h>
 	<string.h>
 
-1739665719 source:c:\users\wixde\documents\tp\tateti.c
+1739840875 source:c:\users\wixde\documents\tp\tateti.c
 	"Tateti.h"
+	"TP.h"
 
-1739667346 c:\users\wixde\documents\tp\vector.h
+1739844624 c:\users\wixde\documents\tp\vector.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
+	<time.h>
 
-1739667945 source:c:\users\wixde\documents\tp\vector.c
+1739844614 source:c:\users\wixde\documents\tp\vector.c
 	"Vector.h"
 
-1739734058 c:\users\wixde\documents\tp\tp.h
+1739842715 c:\users\wixde\documents\tp\tp.h
 	"Archivos.h"
+	"ctype.h"
 	"Tateti.h"
 	"Vector.h"
+	"API.h"
 
-1739734132 source:c:\users\wixde\documents\tp\tp.c
+1739844147 source:c:\users\wixde\documents\tp\tp.c
 	"TP.h"
 

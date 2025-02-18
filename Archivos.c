@@ -26,21 +26,3 @@ int leerConfig(tConfig* config)
     fclose(configArch);
     return 0;
 }
-
-int escribirResultado(tConfig* config)
-{
-    time_t fecha;
-    char fechastr[100];
-    fecha = time(NULL);
-    struct tm* fecha2;
-    fecha2 = localtime(&fecha);
-    strftime(fechastr, 100, "%Y-%m-%d-%H-%m.txt", fecha2);
-    printf("%s", fechastr);
-    FILE* resArch = fopen("wep.txt", "wt");
-    fprintf(resArch, "{\n");
-    fprintf(resArch, "\t\"codigoGrupo\": %s,\n", config->codigo);
-    fprintf(resArch, "\t\"jugadores\": [\n");
-    //Iterar los jugadores y escribir
-    fclose(resArch);
-    return 0;
-}
